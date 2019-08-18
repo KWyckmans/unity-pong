@@ -16,12 +16,21 @@ public class PaddleController : MonoBehaviour
     KeyCode moveUp = KeyCode.Q;
     [SerializeField]
     KeyCode moveDown = KeyCode.A;
+    [SerializeField]
+    AudioClip hit;
+
+    [SerializeField]
+    AudioSource audioSource;
 
     // Use this for initialization
     void Start()
     {
+        Renderer rend = GetComponent<Renderer>();
         minScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        minScreenBounds.y = minScreenBounds.y + rend.bounds.size.y/2;
         maxScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        maxScreenBounds.y = maxScreenBounds.y - rend.bounds.size.y/2;
+
         prevPosY = transform.position.y;
     }
 
@@ -49,6 +58,10 @@ public class PaddleController : MonoBehaviour
 
     }
 
+    void OnCollisionEnter2D(Collision2D other){
+        this.PlaySound(hit);
+    }
+
     void OnCollisionExit2D(Collision2D other)
     {
         float adjust = 5 * direction;
@@ -63,5 +76,11 @@ public class PaddleController : MonoBehaviour
     void MoveDown()
     {
         transform.position = new Vector2(transform.position.x, Mathf.Clamp(transform.position.y - speed, minScreenBounds.y, maxScreenBounds.y));
+    }
+
+    void PlaySound(AudioClip soundClip)
+    {
+        audioSource.clip = soundClip;
+        audioSource.Play();
     }
 }
