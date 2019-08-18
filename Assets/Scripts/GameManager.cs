@@ -11,8 +11,15 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int winScore = 5;
     GUISkin layout;
+    [SerializeField]
+    AudioClip score;
+
+    [SerializeField]
+    AudioSource audioSource;
 
     private bool victory = false;
+
+    KeyCode restart = KeyCode.R;
 
     // Use this for initialization
     void Start()
@@ -23,6 +30,9 @@ public class GameManager : MonoBehaviour
 
     public void Score(int playerNumber)
     {
+        audioSource.clip = score;
+        audioSource.Play();
+
         if (playerNumber == 1)
         {
             playerOneScore++;
@@ -65,8 +75,12 @@ public class GameManager : MonoBehaviour
         GUI.Label(new Rect(Screen.width / 2 + 150 + 50, 20, 100, 100), "" + playerTwoScore, style);
 
         if(victory){
-            Debug.Log(playerOneScore + " - " + playerTwoScore);
             GUI.Label(new Rect(Screen.width / 2 - 125, Screen.height/2, 500, 100), "Player " + (playerOneScore > playerTwoScore?"1":"2") + " wins", style);
+            if(Input.GetKey(restart)){
+                victory = false;
+                this.Start();
+                this.ball.Reset();
+            }
         }
     }
 }
