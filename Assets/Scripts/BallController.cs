@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField]   
     float forceValue = 4.5f;
 
 	float leftBorder = 0.0f;
