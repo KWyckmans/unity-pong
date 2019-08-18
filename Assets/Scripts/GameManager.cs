@@ -20,10 +20,12 @@ public class GameManager : MonoBehaviour
     private bool victory = false;
 
     KeyCode restart = KeyCode.R;
+    KeyCode quit = KeyCode.Escape;
 
     // Use this for initialization
     void Start()
     {
+        Cursor.visible = false;
         playerOneScore = 0;
         playerTwoScore = 0;
     }
@@ -42,9 +44,12 @@ public class GameManager : MonoBehaviour
             playerTwoScore++;
         }
 
-        if(playerOneScore == winScore || playerTwoScore == winScore){
+        if (playerOneScore == winScore || playerTwoScore == winScore)
+        {
             GameOver(playerNumber);
-        } else {
+        }
+        else
+        {
             ball.Reset();
         }
     }
@@ -58,25 +63,30 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKey(quit))
+        {
+            Application.Quit();
+        }
     }
 
     void OnGUI()
     {
         GUI.skin = layout;
-		GUI.color = Color.white;
-		GUI.contentColor = Color.white;
+        GUI.color = Color.white;
+        GUI.contentColor = Color.white;
 
         GUIStyle style = new GUIStyle(GUI.skin.label);
         style.fontSize = 50;
         style.fontStyle = FontStyle.Bold;
-		
+
         GUI.Label(new Rect(Screen.width / 2 - 150 - 50, 20, 100, 100), "" + playerOneScore, style);
         GUI.Label(new Rect(Screen.width / 2 + 150 + 50, 20, 100, 100), "" + playerTwoScore, style);
 
-        if(victory){
-            GUI.Label(new Rect(Screen.width / 2 - 125, Screen.height/2, 500, 100), "Player " + (playerOneScore > playerTwoScore?"1":"2") + " wins", style);
-            if(Input.GetKey(restart)){
+        if (victory)
+        {
+            GUI.Label(new Rect(Screen.width / 2 - 125, Screen.height / 2, 500, 100), "Player " + (playerOneScore > playerTwoScore ? "1" : "2") + " wins", style);
+            if (Input.GetKey(restart))
+            {
                 victory = false;
                 this.Start();
                 this.ball.Reset();
